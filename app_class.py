@@ -1,5 +1,5 @@
 import sys
-
+import copy
 from player_class import *
 from enemy_class import *
 from settings import *
@@ -22,7 +22,7 @@ class App:
         self.e_pos = []
         self.p_pos = None
         self.load()
-        self.player = Player(self, self.p_pos)
+        self.player = Player(self, copy.copy(self.p_pos))
         self.make_enemies()
 
     def run(self):
@@ -66,7 +66,7 @@ class App:
                     elif char == "C":
                         self.coins.append(vec(xidx, yidx))
                     elif char == "P":
-                        self.p_pos = vec(xidx, yidx)
+                        self.p_pos = [xidx, yidx]
                     elif char in ["2", "3", "4", "5"]:
                         self.e_pos.append(vec(xidx, yidx))
                     elif char == "B":
@@ -133,6 +133,10 @@ class App:
         self.player.update()
         for enemy in self.enemies:
             enemy.update()
+        
+        for enemy in self.enemies:
+            if enemy.grid_pos == self.player.grid_pos:
+                self.remove_life()
 
     def playing_draw(self):
         self.screen.fill(BLACK)
@@ -149,9 +153,19 @@ class App:
             enemy.draw()
         pygame.display.update()
 
+    def remove_life(self):
+        self.player.lives -= 1
+
+        if self.player.lives == 0:
+            self.state == 'game over'
+        else:
+            self.player.grid_pos = vec(self.p_pos)
+            self.player.pix_pos = self.player.get_pix_pos()
+            self.player.direction *= 0
+
     def draw_coins(self):
         for coin in self.coins:
             pygame.draw.circle(self.screen, (124, 123, 7),
-                               (int(coin.x * self.cell_width) + self.cell_width
-                                // 2 + TOP_BOTTOM_BUFFER // 2, int(coin.y * self.cell_height)
-                                + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 5)
+                    (int(coin.x * self.cell_width) + self.cell_width
+                    // 2 + TOP_BOTTOM_BUFFER // 2, int(coin.y * self.cell_height)
+                    + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 5)
