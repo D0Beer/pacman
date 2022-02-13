@@ -1,7 +1,4 @@
-from itertools import tee
-from pickle import TRUE
 import sys
-import copy
 from player_class import *
 from enemy_class import *
 from settings import *
