@@ -17,6 +17,7 @@ class App:
         self.cell_height = MAZE_HEIGHT // ROWS
         self.walls = []
         self.coins = []
+        self.fruits = []
         self.enemies = []
         self.e_pos = []
         self.p_pos = None
@@ -68,6 +69,8 @@ class App:
                         self.walls.append(vec(xidx, yidx))
                     elif char == "C":
                         self.coins.append(vec(xidx, yidx))
+                    elif char == "F":
+                        self.fruits.append(vec(xidx, yidx))
                     elif char == "P":
                         self.p_pos = [xidx, yidx]
                     elif char in ["2", "3", "4", "5"]:
@@ -170,6 +173,7 @@ class App:
         self.screen.blit(self.background,
                          (TOP_BOTTOM_BUFFER // 2, TOP_BOTTOM_BUFFER // 2))
         self.draw_coins()
+        self.draw_fruits()
         # self.draw_grid()
         self.draw_text(f'CURRENT SCORE: {self.player.current_score}',
                        self.screen, [60, 0], 18, WHITE, START_FONT)
@@ -195,8 +199,15 @@ class App:
 
     def draw_coins(self):
         for coin in self.coins:
-            pygame.draw.circle(self.screen, (255, 215, 0), (int(coin.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2, int(coin.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 4)
+            pygame.draw.circle(self.screen, (255, 215, 0),
+                (int(coin.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
+                int(coin.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 4)
 
+    def draw_fruits(self):
+        for fruit in self.fruits:
+            pygame.draw.circle(self.screen, (255, 0, 0),
+                (int(fruit.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
+                int(fruit.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 7)
     ########################## GAME OVER FUNCTIONS ##########################
 
     def game_over_events(self):

@@ -1,5 +1,4 @@
-from turtle import screensize
-import pygame
+import pygame, time
 from settings import *
 
 vec = pygame.math.Vector2
@@ -40,6 +39,9 @@ class Player(pygame.sprite.Sprite):
         if self.on_coin():
             self.eat_coin()
 
+        if self.on_fruit():
+            self.eat_fruit()    
+
     def draw(self):
        
         self.rect.x = int(self.pix_pos.x) - 29
@@ -76,6 +78,23 @@ class Player(pygame.sprite.Sprite):
         self.app.coins.remove(self.grid_pos)
         self.current_score += 1
 
+    def on_fruit(self):
+        if self.grid_pos in self.app.fruits:
+            if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % self.app.cell_width == 0:
+                if self.direction == vec(1, 0) or self.direction == vec(-1, 0):
+                    return True
+            if int(self.pix_pos.y + TOP_BOTTOM_BUFFER // 2) % self.app.cell_height == 0:
+                if self.direction == vec(0, 1) or self.direction == vec(0, -1):
+                    return True
+        return False
+
+    def eat_fruit(self):
+        self.app.fruits.remove(self.grid_pos)
+        self.current_score += 50   
+
+        for enemy in self.app.enemies:
+            enemy.personality = 'scared'
+
     def move(self, direction):
         self.stored_direction = direction
 
@@ -99,4 +118,3 @@ class Player(pygame.sprite.Sprite):
             if vec(self.grid_pos + self.direction) == wall:
                 return False
         return True 
-        
