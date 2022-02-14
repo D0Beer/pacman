@@ -145,12 +145,16 @@ class App:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     self.player.move(vec(-1, 0))
+                    self.player.angle = 180
                 if event.key == pygame.K_RIGHT:
                     self.player.move(vec(1, 0))
+                    self.player.angle = 0
                 if event.key == pygame.K_UP:
                     self.player.move(vec(0, -1))
+                    self.player.angle = 90
                 if event.key == pygame.K_DOWN:
                     self.player.move(vec(0, 1))
+                    self.player.angle = 270
 
     def playing_update(self):
         self.player.update()

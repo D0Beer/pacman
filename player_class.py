@@ -1,10 +1,11 @@
+from turtle import screensize
 import pygame
 from settings import *
 
 vec = pygame.math.Vector2
 
 
-class Player:
+class Player(pygame.sprite.Sprite):
     def __init__(self, app, pos):
         self.app = app
         self.starting_pos = [pos.x, pos.y]
@@ -15,7 +16,11 @@ class Player:
         self.able_to_move = True
         self.current_score = 0
         self.speed = 2
-        self.lives = 3    
+        self.lives = 10   
+        self.angle = 0
+        self.image = pygame.image.load("sprites\player.png") 
+        self.rect = self.image.get_rect()
+        self.scaled_image = None
 
     def update(self):
         if self.able_to_move:
@@ -36,9 +41,16 @@ class Player:
             self.eat_coin()
 
     def draw(self):
-        pygame.draw.circle(self.app.screen, PLAYER_COLOR,
-                           (int(self.pix_pos.x), int(self.pix_pos.y)),
-                           self.app.cell_width // 2 - 2)
+       
+        self.rect.x = int(self.pix_pos.x) - 29
+        self.rect.y = int(self.pix_pos.y) - 25
+        self.scaled_image = pygame.transform.scale(self.image, (55, 55))
+        self.rotated_image = pygame.transform.rotate(self.scaled_image, self.angle)
+        self.app.screen.blit(self.rotated_image, self.rect)
+
+        # pygame.draw.circle(self.app.screen, PLAYER_COLOR,
+        #                    (int(self.pix_pos.x), int(self.pix_pos.y)),
+        #                    self.app.cell_width // 2 - 2)
 
         # drawing player lives
         for x in range(self.lives):
@@ -86,4 +98,5 @@ class Player:
         for wall in self.app.walls:
             if vec(self.grid_pos + self.direction) == wall:
                 return False
-        return True
+        return True 
+        
