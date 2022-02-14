@@ -14,7 +14,9 @@ class Enemy:
         self.pix_pos = self.get_pix_pos()
         self.radius = int(self.app.cell_width // 2.3)
         self.number = number
-        self.color = self.set_color()
+        self.image = self.set_image()
+        self.rect = self.image.get_rect()
+        self.scaled_image = None
         self.direction = vec(0, 0)
         self.personality = self.set_personality()
         #print(self.personality)
@@ -35,8 +37,10 @@ class Enemy:
                             + self.app.cell_height // 2) // self.app.cell_height + 1
 
     def draw(self):
-        pygame.draw.circle(self.app.screen, self.color,
-                           (int(self.pix_pos.x), int(self.pix_pos.y)), self.radius)
+        self.rect.x = int(self.pix_pos.x) - 26
+        self.rect.y = int(self.pix_pos.y) - 25
+        self.scaled_image = pygame.transform.scale(self.image, (50, 50))
+        self.app.screen.blit(self.scaled_image, self.rect)
 
     def set_speed(self):
         if self.personality in ['speedy', 'scared']:
@@ -155,15 +159,15 @@ class Enemy:
                    (self.grid_pos.y * self.app.cell_height)
                    + TOP_BOTTOM_BUFFER // 2 + self.app.cell_height // 2)
 
-    def set_color(self):
+    def set_image(self):
         if self.number == 0:
-            return 43, 78, 203
+            return pygame.image.load("sprites/red_ghost.png")
         if self.number == 1:
-            return 197, 200, 27
+            return pygame.image.load("sprites/purple_ghost.png")
         if self.number == 2:
-            return 189, 29, 29
+            return pygame.image.load("sprites/yellow_ghost.png")
         if self.number == 3:
-            return 215, 159, 33
+            return pygame.image.load("sprites/blue_ghost.png")
 
     def set_personality(self):
         if self.number == 0:
