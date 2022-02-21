@@ -15,11 +15,17 @@ class Player(pygame.sprite.Sprite):
         self.able_to_move = True
         self.current_score = 0
         self.speed = 2
-        self.lives = 10   
+        self.lives = 3 
         self.angle = 0
+
         self.image = pygame.image.load("sprites\player.png") 
         self.rect = self.image.get_rect()
         self.scaled_image = None
+
+        self.lives_image = pygame.image.load("sprites\player.png") 
+        self.lives_rect = self.lives_image.get_rect()
+        self.lives_scaled_image = None
+
 
     def update(self):
         if self.able_to_move:
@@ -53,10 +59,14 @@ class Player(pygame.sprite.Sprite):
         # pygame.draw.circle(self.app.screen, PLAYER_COLOR,
         #                    (int(self.pix_pos.x), int(self.pix_pos.y)),
         #                    self.app.cell_width // 2 - 2)
-
+        
         # drawing player lives
         for x in range(self.lives):
-            pygame.draw.circle(self.app.screen, PLAYER_COLOR, (30 + 20 * x, HEIGHT - 15), 7)
+            self.lives_rect.x = 15 + 25 * x
+            self.lives_rect.y = HEIGHT - 37
+            self.lives_scaled_image = pygame.transform.scale(self.lives_image, (50, 50))
+            self.app.screen.blit(self.lives_scaled_image, self.lives_rect)
+            # pygame.draw.circle(self.app.screen, PLAYER_COLOR, (30 + 20 * x, HEIGHT - 15), 7)
 
         # drawing the grid pos rect
         # pygame.draw.rect(self.app.screen, RED,
@@ -92,8 +102,8 @@ class Player(pygame.sprite.Sprite):
         self.app.fruits.remove(self.grid_pos)
         self.current_score += 50   
 
-        for enemy in self.app.enemies:
-            enemy.personality = 'scared'
+        # for enemy in self.app.enemies:
+        #     enemy.personality = 'scared'
 
     def move(self, direction):
         self.stored_direction = direction
