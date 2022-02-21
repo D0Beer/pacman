@@ -25,9 +25,17 @@ class App:
         self.player = Player(self, vec(self.p_pos))
         self.make_enemies()
 
-        self.logo_image = pygame.image.load("images\logo.png")
+        self.logo_image = pygame.image.load("images\logo2.png")
         self.logo_rect = self.logo_image.get_rect()
-        self.scaled_logo_image = pygame.transform.scale(self.logo_image, (500, 250))
+        self.logo_rect.x = 60
+        self.logo_rect.y = HEIGHT - 500
+        self.scaled_logo_image = pygame.transform.scale(self.logo_image, (500, 130))
+
+        self.final_image = pygame.image.load("images\gameover.png")
+        self.final_rect = self.final_image.get_rect()
+        self.final_rect.x = 50
+        self.final_rect.y = HEIGHT - 600
+        self.scaled_final_image = pygame.transform.scale(self.final_image, (500, 250))
     
     def run(self):
         while self.running:
@@ -114,11 +122,14 @@ class App:
             enemy.direction *= 0
 
         self.coins = []
+        self.fruits = []
         with open("walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
                     if char == 'C':
                         self.coins.append(vec(xidx, yidx))
+                    if char == "F":
+                        self.fruits.append(vec(xidx, yidx))
         self.state = 'playing'
 
     ########################## INTRO FUNCTIONS ##########################
@@ -135,8 +146,6 @@ class App:
 
     def start_draw(self):
         self.screen.fill(BLACK)
-        self.logo_rect.x = 60
-        self.logo_rect.y = HEIGHT - 600
         self.screen.blit(self.scaled_logo_image, self.logo_rect)
         self.draw_text('PUSH SPACE BAR TO START!', self.screen, [WIDTH // 2, HEIGHT // 2],
                         START_TEXT_SIZE, (255,215,0), START_FONT, centered=True)
@@ -231,12 +240,11 @@ class App:
 
     def game_over_draw(self):
         self.screen.fill(BLACK)
+        self.screen.blit(self.scaled_final_image, self.final_rect)
         quit_text = 'Press the escape button to QUIT'
         again_text = 'Press the SPACE bar to PLAY AGAIN'
-        self.draw_text('GAME OVER', self.screen, [WIDTH // 2, 100], 52, RED,
-                    'arial', centered=True)
-        self.draw_text(again_text, self.screen, [WIDTH // 2, HEIGHT // 2], 36,
-                    (190, 190, 190),'arial', centered=True)
-        self.draw_text(quit_text, self.screen, [WIDTH // 2, HEIGHT // 1.5], 36,
-                    (190, 190, 190),'arial', centered=True)
+        self.draw_text(again_text, self.screen, [WIDTH // 2, HEIGHT // 2], 27,
+                    (255,215,0),'arial', centered=True)
+        self.draw_text(quit_text, self.screen, [WIDTH // 2, HEIGHT // 1.7], 27,
+                    (255,215,0),'arial', centered=True)
         pygame.display.update()
