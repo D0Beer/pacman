@@ -24,6 +24,10 @@ class App:
         self.load()
         self.player = Player(self, vec(self.p_pos))
         self.make_enemies()
+
+        self.logo_image = pygame.image.load("images\logo.png")
+        self.logo_rect = self.logo_image.get_rect()
+        self.scaled_logo_image = pygame.transform.scale(self.logo_image, (500, 250))
     
     def run(self):
         while self.running:
@@ -131,12 +135,15 @@ class App:
 
     def start_draw(self):
         self.screen.fill(BLACK)
-        self.draw_text('PUSH SPACE BAR', self.screen, [WIDTH // 2, HEIGHT // 2],
-                       START_TEXT_SIZE, (170, 132, 58), START_FONT, centered=True)
-        self.draw_text('1 PLAYER ONLY', self.screen, [WIDTH // 2, HEIGHT // 2 + 50],
-                       START_TEXT_SIZE, (44, 167, 198), START_FONT, centered=True)
-        self.draw_text('HIGH SCORE', self.screen,
-                       [4, 0], START_TEXT_SIZE, (255, 255, 255), START_FONT)
+        self.logo_rect.x = 60
+        self.logo_rect.y = HEIGHT - 600
+        self.screen.blit(self.scaled_logo_image, self.logo_rect)
+        self.draw_text('PUSH SPACE BAR TO START!', self.screen, [WIDTH // 2, HEIGHT // 2],
+                        START_TEXT_SIZE, (255,215,0), START_FONT, centered=True)
+        self.draw_text('CREATED BY DOBER', self.screen, [WIDTH // 2, HEIGHT - 30],
+                        14, (44, 167, 198), START_FONT, centered=True)
+        self.draw_text('HIGH SCORE: ', self.screen,
+                       [4, 0], 16, (255, 255, 255), START_FONT)
         pygame.display.update()
 
     ########################## PLAYING FUNCTIONS ##########################
