@@ -14,8 +14,9 @@ class Player(pygame.sprite.Sprite):
         self.stored_direction = None
         self.able_to_move = True
         self.current_score = 0
+        self.high_score = self.read_high_score()
         self.speed = 2
-        self.lives = 3 
+        self.lives = 1 
         self.angle = 0
 
         self.image = pygame.image.load("sprites\player.png") 
@@ -88,6 +89,9 @@ class Player(pygame.sprite.Sprite):
         self.app.coins.remove(self.grid_pos)
         self.current_score += 1
 
+        if self.current_score >= int(self.high_score):
+            self.write_high_score(str(self.current_score))
+
     def on_fruit(self):
         if self.grid_pos in self.app.fruits:
             if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % self.app.cell_width == 0:
@@ -128,3 +132,13 @@ class Player(pygame.sprite.Sprite):
             if vec(self.grid_pos + self.direction) == wall:
                 return False
         return True 
+
+    def read_high_score(self):
+        with open("data\highscore.txt", 'r') as file:
+            high_score = file.read()
+
+        return high_score
+
+    def write_high_score(self, score):
+        with open("data\highscore.txt", 'w') as file:
+            file.write(score)

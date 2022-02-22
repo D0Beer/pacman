@@ -74,7 +74,7 @@ class App:
 
         # opening walls file
         # creating walls list with co-ords of walls
-        with open("walls.txt", "r") as file:
+        with open("data\walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
                     if char == "1":
@@ -123,7 +123,7 @@ class App:
 
         self.coins = []
         self.fruits = []
-        with open("walls.txt", "r") as file:
+        with open("data\walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
                     if char == 'C':
@@ -151,7 +151,7 @@ class App:
                         START_TEXT_SIZE, (255,215,0), START_FONT, centered=True)
         self.draw_text('CREATED BY DOBER', self.screen, [WIDTH // 2, HEIGHT - 30],
                         14, (44, 167, 198), START_FONT, centered=True)
-        self.draw_text('HIGH SCORE: ', self.screen,
+        self.draw_text(f'HIGH SCORE: {self.player.high_score}', self.screen,
                        [4, 0], 16, (255, 255, 255), START_FONT)
         pygame.display.update()
 
@@ -193,7 +193,7 @@ class App:
         # self.draw_grid()
         self.draw_text(f'CURRENT SCORE: {self.player.current_score}',
                        self.screen, [60, 0], 18, WHITE, START_FONT)
-        self.draw_text('HIGH SCORE: 0', self.screen,
+        self.draw_text(f'HIGH SCORE: {self.player.high_score}', self.screen,
                        [WIDTH // 2 + 60, 0], 18, WHITE, START_FONT)
         self.player.draw()
         for enemy in self.enemies:
@@ -241,10 +241,13 @@ class App:
     def game_over_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.scaled_final_image, self.final_rect)
-        quit_text = 'Press the escape button to QUIT'
+        quit_text = 'Press the ESCAPE button to QUIT'
         again_text = 'Press the SPACE bar to PLAY AGAIN'
         self.draw_text(again_text, self.screen, [WIDTH // 2, HEIGHT // 2], 27,
                     (255,215,0),'arial', centered=True)
         self.draw_text(quit_text, self.screen, [WIDTH // 2, HEIGHT // 1.7], 27,
                     (255,215,0),'arial', centered=True)
+        self.draw_text(f"Your score: {self.player.current_score}           Your Highscore: {self.player.high_score}",
+                    self.screen, [WIDTH // 2, HEIGHT // 2 + 150], 27,
+                    RED,'arial', centered=True)
         pygame.display.update()
