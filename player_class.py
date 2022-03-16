@@ -1,5 +1,7 @@
-import pygame, time
+import pygame
 from settings import *
+from enemy_class import *
+
 
 vec = pygame.math.Vector2
 
@@ -16,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.current_score = 0
         self.high_score = self.read_high_score()
         self.speed = 2
-        self.lives = 1 
+        self.lives = 3 
         self.angle = 0
 
         self.image = pygame.image.load("sprites\player.png") 
@@ -104,10 +106,7 @@ class Player(pygame.sprite.Sprite):
 
     def eat_fruit(self):
         self.app.fruits.remove(self.grid_pos)
-        self.current_score += 50   
-
-        # for enemy in self.app.enemies:
-        #     enemy.personality = 'scared'
+        self.current_score += 50 
 
     def move(self, direction):
         self.stored_direction = direction
