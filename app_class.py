@@ -36,7 +36,7 @@ class App:
         self.final_rect.x = 50
         self.final_rect.y = HEIGHT - 600
         self.scaled_final_image = pygame.transform.scale(self.final_image, (500, 250))
-    
+
     def run(self):
         while self.running:
             if self.state == 'start':
@@ -74,7 +74,7 @@ class App:
 
         # opening walls file
         # creating walls list with co-ords of walls
-        with open("data\walls.txt", "r") as file:
+        with open("data_files\walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
                     if char == "1":
@@ -123,7 +123,7 @@ class App:
 
         self.coins = []
         self.fruits = []
-        with open("data\walls.txt", "r") as file:
+        with open("data_files\walls.txt", "r") as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
                     if char == 'C':
@@ -148,9 +148,9 @@ class App:
         self.screen.fill(BLACK)
         self.screen.blit(self.scaled_logo_image, self.logo_rect)
         self.draw_text('PUSH SPACE BAR TO START!', self.screen, [WIDTH // 2, HEIGHT // 2],
-                        START_TEXT_SIZE, (255,215,0), START_FONT, centered=True)
+                       START_TEXT_SIZE, (255, 215, 0), START_FONT, centered=True)
         self.draw_text('CREATED BY DOBER', self.screen, [WIDTH // 2, HEIGHT - 30],
-                        14, (44, 167, 198), START_FONT, centered=True)
+                       14, (44, 167, 198), START_FONT, centered=True)
         self.draw_text(f'HIGH SCORE: {self.player.high_score}', self.screen,
                        [4, 0], 16, (255, 255, 255), START_FONT)
         pygame.display.update()
@@ -179,7 +179,7 @@ class App:
         self.player.update()
         for enemy in self.enemies:
             enemy.update()
-        
+
         for enemy in self.enemies:
             if enemy.grid_pos == self.player.grid_pos:
                 self.remove_life()
@@ -216,14 +216,15 @@ class App:
     def draw_coins(self):
         for coin in self.coins:
             pygame.draw.circle(self.screen, (255, 215, 0),
-                (int(coin.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
-                int(coin.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 4)
+                               (int(coin.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
+                                int(coin.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 4)
 
     def draw_fruits(self):
         for fruit in self.fruits:
             pygame.draw.circle(self.screen, (255, 0, 0),
-                (int(fruit.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
-                int(fruit.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 7)
+                               (int(fruit.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
+                                int(fruit.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 7)
+
     ########################## GAME OVER FUNCTIONS ##########################
 
     def game_over_events(self):
@@ -244,10 +245,10 @@ class App:
         quit_text = 'Press the ESCAPE button to QUIT'
         again_text = 'Press the SPACE bar to PLAY AGAIN'
         self.draw_text(again_text, self.screen, [WIDTH // 2, HEIGHT // 2], 27,
-                    (255,215,0),'arial', centered=True)
+                       (255, 215, 0), 'arial', centered=True)
         self.draw_text(quit_text, self.screen, [WIDTH // 2, HEIGHT // 1.7], 27,
-                    (255,215,0),'arial', centered=True)
+                       (255, 215, 0), 'arial', centered=True)
         self.draw_text(f"Your score: {self.player.current_score}           Your Highscore: {self.player.high_score}",
-                    self.screen, [WIDTH // 2, HEIGHT // 2 + 150], 27,
-                    RED,'arial', centered=True)
+                       self.screen, [WIDTH // 2, HEIGHT // 2 + 150], 27,
+                       RED, 'arial', centered=True)
         pygame.display.update()

@@ -19,7 +19,7 @@ class Enemy:
         self.scaled_image = None
         self.direction = vec(0, 0)
         self.personality = self.set_personality()
-        #print(self.personality)
+        # print(self.personality)
         self.target = None
         self.speed = self.set_speed()
 
@@ -51,16 +51,16 @@ class Enemy:
 
     def set_target(self):
         if self.personality == "speedy" or self.personality == "slow":
-            return self.app.player.grid_pos  
+            return self.app.player.grid_pos
         else:
             if self.app.player.grid_pos[0] > COLS // 2 and self.app.player.grid_pos[1] > ROWS // 2:
-                 return vec(1, 1)  
+                return vec(1, 1)
             if self.app.player.grid_pos[0] > COLS // 2 and self.app.player.grid_pos[1] < ROWS // 2:
-                 return vec(1, ROWS - 2) 
+                return vec(1, ROWS - 2)
             if self.app.player.grid_pos[0] < COLS // 2 and self.app.player.grid_pos[1] > ROWS // 2:
-                 return vec(COLS - 2, 1) 
+                return vec(COLS - 2, 1)
             else:
-                 return vec(COLS - 2, ROWS - 2)                     
+                return vec(COLS - 2, ROWS - 2)
 
     def time_to_move(self):
         if int(self.pix_pos.x + TOP_BOTTOM_BUFFER // 2) % self.app.cell_width == 0:
@@ -92,7 +92,7 @@ class Enemy:
         path = self.BFS([int(self.grid_pos.x), int(self.grid_pos.y)],
                         [int(target[0]), int(target[1])])
 
-        return path[1]  
+        return path[1]
 
     def BFS(self, start, target):
         grid = [[0 for x in range(28)] for x in range(30)]
@@ -116,8 +116,8 @@ class Enemy:
                 neighbours = [[0, -1], [1, 0], [0, 1], [-1, 0]]
 
                 for neighbour in neighbours:
-                    if neighbour[0]+current[0] >= 0 and neighbour[0] + current[0] < len(grid[0]):
-                        if neighbour[1]+current[1] >= 0 and neighbour[1] + current[1] < len(grid):
+                    if 0 <= neighbour[0] + current[0] < len(grid[0]):
+                        if 0 <= neighbour[1] + current[1] < len(grid):
                             next_cell = [neighbour[0] + current[0], neighbour[1] + current[1]]
 
                             if next_cell not in visited:
@@ -131,7 +131,7 @@ class Enemy:
                 if step["Next"] == target:
                     target = step["Current"]
                     shortest.insert(0, step["Current"])
-                    
+
         return shortest
 
     def get_random_direction(self):
@@ -178,5 +178,3 @@ class Enemy:
             return "random"
         else:
             return "scared"
-
-

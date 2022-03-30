@@ -2,7 +2,6 @@ import pygame
 from settings import *
 from enemy_class import *
 
-
 vec = pygame.math.Vector2
 
 
@@ -18,17 +17,16 @@ class Player(pygame.sprite.Sprite):
         self.current_score = 0
         self.high_score = self.read_high_score()
         self.speed = 2
-        self.lives = 3 
+        self.lives = 3
         self.angle = 0
 
-        self.image = pygame.image.load("sprites\player.png") 
+        self.image = pygame.image.load("sprites\player.png")
         self.rect = self.image.get_rect()
         self.scaled_image = None
 
-        self.lives_image = pygame.image.load("sprites\player.png") 
+        self.lives_image = pygame.image.load("sprites\player.png")
         self.lives_rect = self.lives_image.get_rect()
         self.lives_scaled_image = None
-
 
     def update(self):
         if self.able_to_move:
@@ -49,10 +47,10 @@ class Player(pygame.sprite.Sprite):
             self.eat_coin()
 
         if self.on_fruit():
-            self.eat_fruit()    
+            self.eat_fruit()
 
     def draw(self):
-       
+
         self.rect.x = int(self.pix_pos.x) - 29
         self.rect.y = int(self.pix_pos.y) - 25
         self.scaled_image = pygame.transform.scale(self.image, (55, 55))
@@ -62,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         # pygame.draw.circle(self.app.screen, PLAYER_COLOR,
         #                    (int(self.pix_pos.x), int(self.pix_pos.y)),
         #                    self.app.cell_width // 2 - 2)
-        
+
         # drawing player lives
         for x in range(self.lives):
             self.lives_rect.x = 15 + 25 * x
@@ -106,7 +104,7 @@ class Player(pygame.sprite.Sprite):
 
     def eat_fruit(self):
         self.app.fruits.remove(self.grid_pos)
-        self.current_score += 50 
+        self.current_score += 50
 
     def move(self, direction):
         self.stored_direction = direction
@@ -130,14 +128,14 @@ class Player(pygame.sprite.Sprite):
         for wall in self.app.walls:
             if vec(self.grid_pos + self.direction) == wall:
                 return False
-        return True 
+        return True
 
     def read_high_score(self):
-        with open("data\highscore.txt", 'r') as file:
+        with open("data_files\highscore.txt", 'r') as file:
             high_score = file.read()
 
         return high_score
 
     def write_high_score(self, score):
-        with open("data\highscore.txt", 'w') as file:
+        with open("data_files\highscore.txt", 'w') as file:
             file.write(score)
